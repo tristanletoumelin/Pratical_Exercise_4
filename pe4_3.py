@@ -3,7 +3,8 @@ import os
 import bs4
 from bs4 import BeautifulSoup
 import re
-
+from lxml import etree
+import numpy as np
 # #Example 0.1
 # def getHTMLText(url):
 #     try:
@@ -84,7 +85,7 @@ import re
 # print(soup.find_all("div"))
 
 
-# #Example 4.1
+#Example 4.1
 # def getHTMLText(url):
 #     try:
 #         r = requests.get(url, timeout=30)
@@ -120,11 +121,30 @@ import re
 
 #Example 4.2
 
-r = requests.get("https://www.shanghairanking.com/rankings/arwu/2023")
-ulist = []
-soup = BeautifulSoup(r.text, 'html.parser')
-for tr in soup.find('tbody').children:
-    if isinstance(tr, bs4.element.Tag):
-        tds = tr('td')
-        ulist.append([tds[0].string, tds[1].string, tds[3].string])
-        print(tds[1].find_all(string = re.compile('sity')))
+# r = requests.get("https://www.shanghairanking.com/rankings/arwu/2023")
+# ulist = []
+# soup = BeautifulSoup(r.text, 'html.parser')
+# for tr in soup.find('tbody').children:
+#     if isinstance(tr, bs4.element.Tag):
+#         tds = tr('td')
+#         ulist.append([tds[0].string, tds[1].string, tds[3].string])
+#         #print(tds[1].find_all(string = re.compile('sity')))
+#         a= list(tds[1].find_all(string = re.compile('sity')))
+#         for l in a:
+#             if type(l) == str:   
+#                 print(l)
+
+# Example 4.3
+kv = {'User-Agent':'Mozilla/5.0'}
+url = "https://www.shanghairanking.com/rankings/arwu/2022"
+page_text = requests.get(url, headers = kv).text
+tree = etree.HTML(page_text)
+uni = tree.xpath('//div[@class="rk-table-box"]/table/tbody/tr')
+print(uni)
+all = []
+for u in uni:
+    uni = u.xpath('./td[2]/div/div[2]/span/text')
+    print("-------------------------")
+    print(uni)
+    all.append(uni)
+all = np.reshape(all, (30, 1))
