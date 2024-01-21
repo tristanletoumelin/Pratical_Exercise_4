@@ -131,12 +131,12 @@ import numpy as np
 #         #print(tds[1].find_all(string = re.compile('sity')))
 #         a= list(tds[1].find_all(string = re.compile('sity')))
 #         for l in a:
-#             if type(l) == str:   
+#             if type(l) == str:
 #                 print(l)
 
 # Example 4.3
 kv = {'User-Agent':'Mozilla/5.0'}
-url = "https://www.shanghairanking.com/rankings/arwu/2022"
+url = "https://www.shanghairanking.com/rankings/arwu/2023"
 page_text = requests.get(url, headers = kv).text
 tree = etree.HTML(page_text)
 uni = tree.xpath('//div[@class="rk-table-box"]/table/tbody/tr')
